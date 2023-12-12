@@ -7,6 +7,7 @@ using YOLOv3MLNet.DataStructures;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using System.Collections;
+using static Unity.VisualScripting.Member;
 
 public class IONNX : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class IONNX : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        for(int i = 0; i < CategoriesCount; i++)
+        for (int i = 0; i < CategoriesCount; i++)
         {
             catecories[i] = i.ToString();
         }
@@ -51,17 +52,21 @@ public class IONNX : MonoBehaviour
 
     public IReadOnlyList<YoloV3Result> Prediction(Texture2D img)
     {
+        Texture2D texture = img;
+        Debug.Log(texture.format);
+        texture = ResizeTexture(image, 256, 256);
+        Debug.Log(texture.format);
+
+        texture.name = "NEW RESIZE IMAGE_" + texture.name;
+        image_result.texture = texture;
+
         //추론 엔진 생성 // GPU 작업 예약
         var worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, m_RunTimeModel);
 
-        //Texture2D texture = img;// ScaleTexture(img, predict.ImageWidth, predict.ImageHeight);
-        //texture.Reinitialize(256, 256);
-
-
         //#인풋 인자값인 텍스쳐 지정
-        TensorShape shape = new TensorShape(1,256,256,3);
-        Tensor input = new Tensor(img);//.Reshape(shape);
-        Debug.Log("Shape : "+input.shape + "Length : " +input.length );
+        TensorShape shape = new TensorShape(1, 256, 256, 3);
+        Tensor input = new Tensor(texture);//.Reshape(shape);
+        Debug.Log("Shape : " + input.shape + "Length : " + input.length);
         //값을 넘겨 작업 실행
         worker.Execute(input);
 
@@ -81,13 +86,13 @@ public class IONNX : MonoBehaviour
         //setting
         predict.BBoxes = output_boxes.ToReadOnlyArray();
         predict.Classes = output_classe.ToReadOnlyArray();
-        predict.ImageWidth = img.width;
-        predict.ImageHeight = img.height;
+        predict.ImageWidth = texture.width;
+        predict.ImageHeight = texture.height;
 
         Debug.Log($"BOXES.COUNT : {predict.BBoxes.Length} / Classes.COUNT : {predict.Classes.Length} / ImageWidth: {predict.ImageWidth} / ImageHeight : {predict.ImageHeight}");
 
         //결과값을 가져옵니다.
-        IReadOnlyList<YoloV3Result> result =null;
+        IReadOnlyList<YoloV3Result> result = null;
         result = predict.GetResults(catecories);
 
         // 0번이 라벨로 발생하면 
@@ -113,21 +118,20 @@ public class IONNX : MonoBehaviour
 
         return result;
     }
-
-    private Texture2D ScaleTexture(Texture2D source, float targetWidth, float targetHeight)
+    private Texture2D ResizeTexture(Texture2D source, int newWidth, int newHeight)
     {
-        Texture2D result = new Texture2D((int)targetWidth, (int)targetHeight, source.format, true);
-        Color[] rpixels = result.GetPixels(0);
-        float incX = (1.0f / (float)targetWidth);
-        float incY = (1.0f / (float)targetHeight);
-        for (int px = 0; px < rpixels.Length; px++)
-        {
-            rpixels[px] = source.GetPixelBilinear(incX * ((float)px % targetWidth), incY * ((float)Mathf.Floor(px / targetWidth)));
-        }
-        result.SetPixels(rpixels, 0);
-        result.Apply();
+        RenderTexture rt = new RenderTexture(newWidth, newHeight, 0);
+        Graphics.Blit(source, rt);
+        Texture2D newTexture = new Texture2D(newWidth, newHeight);
 
-        return result;
+        //포맷변경
+        newTexture.Reinitialize(newWidth, newHeight, TextureFormat.RGB24, false);
+        //픽셀을 읽어와 지정
+        newTexture.ReadPixels(new Rect(0, 0, newWidth, newHeight), 0, 0);
+        newTexture.Apply();
+        RenderTexture.active = null;
+        rt.Release();
+        return newTexture;
     }
 }
 

@@ -30,7 +30,7 @@ namespace YOLOv3MLNet.DataStructures
         [Header("classes")]
         public float[] Classes;
 
-        public IReadOnlyList<YoloV3Result> GetResults(string[] categories, float confThres = 0.5f, float iouThres = 0.5f)
+        public IReadOnlyList<YoloV3Result> GetResults(string[] categories, float confThres = 0.3f, float iouThres = 0.5f)
         {
             //바운딩 박스 계수 판단
             if (BBoxes.Length != yoloV3BboxPredictionCount * 4)
