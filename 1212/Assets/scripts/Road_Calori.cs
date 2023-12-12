@@ -50,7 +50,7 @@ public class Road_Calori : MonoBehaviour
 
     public string Get(int x, int y)
     {
-        if (x < 0 || y < 0) { return Data[1][0]; }
+        if (x == 0 || y < 0) { return "±×¸©"; }//Data[1][0]; }
         return Data[x][y];
     }
 

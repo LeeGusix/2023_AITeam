@@ -732,7 +732,11 @@ PrefabInstance:
     - target: {fileID: 6034798313273858557, guid: 28b6e6da7426039458a2e746247a9679, type: 3}
       propertyPath: image
       value: 
-      objectReference: {fileID: 2800000, guid: 40b23812d7bc96a40899681eb1f4088f, type: 3}
+      objectReference: {fileID: 2800000, guid: 8ebbcb93084e9c041869fac773bcfcec, type: 3}
+    - target: {fileID: 6034798313273858557, guid: 28b6e6da7426039458a2e746247a9679, type: 3}
+      propertyPath: isTesting
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6034798313273858557, guid: 28b6e6da7426039458a2e746247a9679, type: 3}
       propertyPath: image_result
       value: 
@@ -915,7 +919,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 9d1090ec63018a346b3aae2299fecb38, type: 3}
+  m_Texture: {fileID: 2800000, guid: 77a89ce664dfa435b9c0b0cebf635663, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
