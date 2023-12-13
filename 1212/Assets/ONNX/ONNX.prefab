@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6034798313273858557
 MonoBehaviour:
@@ -46,7 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Model: {fileID: 5022602860645237092, guid: 1cedc1a880fbb3948af59f1695f5e703, type: 3}
-  image: {fileID: 2800000, guid: 6a08a9632a83fb848bdb57ce5f0b857c, type: 3}
+  isTesting: 0
+  image: {fileID: 2800000, guid: 8ebbcb93084e9c041869fac773bcfcec, type: 3}
   image_result: {fileID: 0}
 --- !u!114 &4530229068974656898
 MonoBehaviour:
