@@ -5,10 +5,11 @@ using UnityEngine.UI;
 using pred = YOLOv3MLNet.DataStructures;
 using YOLOv3MLNet.DataStructures;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using System.Collections;
-using static Unity.VisualScripting.Member;
 
+/// <summary>
+/// 이미지를 넣으면 예측 결과값을 추측함
+/// </summary>
 public class IONNX : MonoBehaviour
 {
     //ONNX의 값을 참고
@@ -17,6 +18,9 @@ public class IONNX : MonoBehaviour
     //바라쿠다 모델
     public NNModel Model;
     private Model m_RunTimeModel; //모델을 불러오기 위함
+
+    [Header("For Testing")]
+    public bool isTesting;
 
     //임시 분류 이미지
     public Texture2D image;
@@ -45,9 +49,15 @@ public class IONNX : MonoBehaviour
 
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(2.0f);
-        //test
-        Prediction(image);
+        if (isTesting)
+        {
+            yield return new WaitForSeconds(2.0f);
+            Prediction(image);
+        }
+        else
+        {
+            image_result.enabled = false;
+        }
     }
 
     public IReadOnlyList<YoloV3Result> Prediction(Texture2D img)
@@ -101,8 +111,12 @@ public class IONNX : MonoBehaviour
             Debug.Log("도출된 결과 개수 : " + result.Count);
             foreach (var item in result)
             {
+                //    Debug.Log(FindObjectOfType<Road_Calori>().Get(0, 0));
+                //    Debug.Log(FindObjectOfType<Road_Calori>().Get(1, 0));
+                //    Debug.Log(FindObjectOfType<Road_Calori>().Get(2, 0));
                 int index = int.Parse(item.Label);
-                Debug.Log("라벨 : " + item.Label + "  :: " + FindObjectOfType<Road_Calori>().Get(index - 1, 0));
+                Debug.Log("라벨 : " + item.Label + "  :: " + FindObjectOfType<Road_Calori>().Get(index, 0)
+                    + " 정확도 : " + item.Confidence);
                 //.Data[index][0];
             }
         }
@@ -116,6 +130,9 @@ public class IONNX : MonoBehaviour
         predict.BBoxes = null;
         predict.Classes = null;
 
+        //분류된 결과값이 없다면 return NULL
+        //Label = 0일 경우 분류되 되지 않은 것과 같음
+        //Confidence = 정확도
         return result;
     }
     private Texture2D ResizeTexture(Texture2D source, int newWidth, int newHeight)
