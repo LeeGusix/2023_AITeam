@@ -50,6 +50,10 @@ public class Road_Calori : MonoBehaviour
 
     public string Get(int x, int y)
     {
+<<<<<<< HEAD
+=======
+        if (x < 0 || y < 0) { return Data[1][0]; }
+>>>>>>> parent of 0f760cb (수정)
         return Data[x][y];
     }
 
