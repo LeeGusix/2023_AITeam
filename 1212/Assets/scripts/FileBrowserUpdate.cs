@@ -37,8 +37,10 @@ public class FileBrowserUpdate : MonoBehaviour
             else
             {
                 var uwrTexture = DownloadHandlerTexture.GetContent(uwr);
-                rawImage.texture = uwrTexture;
-                rawImage1.texture = uwrTexture;
+                //rawImage.texture = uwrTexture;
+                //rawImage1.texture = uwrTexture;
+
+                FindAnyObjectByType<Photo>().SelectImage(uwrTexture);
             }
         }
     }

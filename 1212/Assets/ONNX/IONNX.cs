@@ -20,13 +20,7 @@ public class IONNX : MonoBehaviour
     public NNModel Model;
     private Model m_RunTimeModel; //모델을 불러오기 위함
 
-    [Header("For Testing")]
-    public bool isTesting;
-
-    //임시 분류 이미지
-    public Texture2D image;
-
-    //결과를 출력해줄 UI 이미지
+    //변환한 이미지
     public RawImage image_result;
 
     //결과값 도출 컴포넌트ㄴ
@@ -38,6 +32,7 @@ public class IONNX : MonoBehaviour
     //음식 이름 저장 변수
     int FoodName;
 
+    /*
     //음식 정보 텍스트
     public TMP_Text FoodName_Text;
     public TMP_Text kcal_Text;
@@ -45,6 +40,13 @@ public class IONNX : MonoBehaviour
     public TMP_Text Carbohydrate_Text;
     public TMP_Text fat_Text;
     public TMP_Text sugar_Text;
+    */
+
+    [Header("테스트를 위한 값")]
+    public bool isTesting;
+
+    //임시 분류 이미지
+    public Texture2D image;
 
     //Road_Calori 스크립트 불러오기
     Road_Calori RC;
@@ -60,6 +62,7 @@ public class IONNX : MonoBehaviour
         //Importing
         m_RunTimeModel = ModelLoader.Load(Model);
         predict = GetComponent<pred.YoloV3Prediction>();
+        RC = FindObjectOfType<Road_Calori>();
     }
 
     IEnumerator Start()
@@ -126,15 +129,23 @@ public class IONNX : MonoBehaviour
             Debug.Log("도출된 결과 개수 : " + result.Count);
             foreach (var item in result)
             {
-                //    Debug.Log(FindObjectOfType<Road_Calori>().Get(0, 0));
-                //    Debug.Log(FindObjectOfType<Road_Calori>().Get(1, 0));
-                    Debug.Log(FindObjectOfType<Road_Calori>().Get(2, 0));
+                //    Debug.Log(RC.Get(0, 0));
+                //    Debug.Log(RC.Get(1, 0));
+                    Debug.Log(RC.Get(2, 0));
                 FoodName = int.Parse(item.Label);
-                Debug.Log("라벨 : " + item.Label + "  :: " + FindObjectOfType<Road_Calori>().Get(FoodName, 0)
+                Debug.Log("라벨 : " + item.Label + "  :: " + RC.Get(FoodName, 0)
                     + " 정확도 : " + item.Confidence);
                 //FoodName = 150;
-                Food_Data_Set();
+                
             }
+
+            //값이 올바른지 판단
+            int index = int.Parse(result[result.Count - 1].Label);
+            index = index == 0? 1 : index;
+
+            //최종 1개에 대해 값을 지정해서 출력
+            FoodName = index;
+            Food_Data_Set(img);
         }
 
         //종료
@@ -167,20 +178,47 @@ public class IONNX : MonoBehaviour
         return newTexture;
     }
 
-    public void Food_Data_Set()
+    public void Food_Data_Set(Texture2D img)
     {
-        Debug.Log(FindObjectOfType<Road_Calori>().Get(FoodName, 0));
-        FoodName_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 0);
+        Debug.Log(RC.Get(FoodName, 0));
+        string fName = RC.Get(FoodName, 0);
+        string fCal = RC.Get(FoodName, 2);
+        string fProtein = RC.Get(FoodName, 6);
+        string fCarbohydrate = RC.Get(FoodName, 3);
+        string fFat = RC.Get(FoodName, 5);
+        string fSugar = RC.Get(FoodName, 4);
+        string DCal = "2000";
 
-        kcal_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 2);
+        float _cal = float.Parse(fCal);
+        string DSCal = $"{2000.0f - _cal}";
 
-        Protein_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 6);
 
-        Carbohydrate_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 3);
+        CanvasManager.Instance.ShowResult(
+            fName,
+            fCal,
+            DCal,
+            DSCal,
+            fProtein,
+            fCarbohydrate,
+            fFat,
+            fSugar,
+            img
+         );
 
-        fat_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 5);
+        /*
+        FoodName_Text.text = RC.Get(FoodName, 0);
+        if (kcal_Text)
+        {
+           
 
-        sugar_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 4);
+            /*
+            Protein_Text.text = RC.Get(FoodName, 6);
+
+            Carbohydrate_Text.text = RC.Get(FoodName, 3);
+
+            fat_Text.text = RC.Get(FoodName, 5);
+
+            sugar_Text.text = RC.Get(FoodName, 4);*/
     }
 }
 
