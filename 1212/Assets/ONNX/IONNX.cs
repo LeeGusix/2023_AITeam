@@ -6,6 +6,7 @@ using pred = YOLOv3MLNet.DataStructures;
 using YOLOv3MLNet.DataStructures;
 using System.Collections.Generic;
 using System.Collections;
+using TMPro;
 
 /// <summary>
 /// 이미지를 넣으면 예측 결과값을 추측함
@@ -33,6 +34,20 @@ public class IONNX : MonoBehaviour
 
     //임시 카테고리
     string[] catecories = new string[CategoriesCount];
+
+    //음식 이름 저장 변수
+    int FoodName;
+
+    //음식 정보 텍스트
+    public TMP_Text FoodName_Text;
+    public TMP_Text kcal_Text;
+    public TMP_Text Protein_Text;
+    public TMP_Text Carbohydrate_Text;
+    public TMP_Text fat_Text;
+    public TMP_Text sugar_Text;
+
+    //Road_Calori 스크립트 불러오기
+    Road_Calori RC;
 
     // Start is called before the first frame update
     void Awake()
@@ -113,11 +128,12 @@ public class IONNX : MonoBehaviour
             {
                 //    Debug.Log(FindObjectOfType<Road_Calori>().Get(0, 0));
                 //    Debug.Log(FindObjectOfType<Road_Calori>().Get(1, 0));
-                //    Debug.Log(FindObjectOfType<Road_Calori>().Get(2, 0));
-                int index = int.Parse(item.Label);
-                Debug.Log("라벨 : " + item.Label + "  :: " + FindObjectOfType<Road_Calori>().Get(index, 0)
+                    Debug.Log(FindObjectOfType<Road_Calori>().Get(2, 0));
+                FoodName = int.Parse(item.Label);
+                Debug.Log("라벨 : " + item.Label + "  :: " + FindObjectOfType<Road_Calori>().Get(FoodName, 0)
                     + " 정확도 : " + item.Confidence);
-                //.Data[index][0];
+                //FoodName = 150;
+                Food_Data_Set();
             }
         }
 
@@ -149,6 +165,22 @@ public class IONNX : MonoBehaviour
         RenderTexture.active = null;
         rt.Release();
         return newTexture;
+    }
+
+    public void Food_Data_Set()
+    {
+        Debug.Log(FindObjectOfType<Road_Calori>().Get(FoodName, 0));
+        FoodName_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 0);
+
+        kcal_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 2);
+
+        Protein_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 6);
+
+        Carbohydrate_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 3);
+
+        fat_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 5);
+
+        sugar_Text.text = FindObjectOfType<Road_Calori>().Get(FoodName, 4);
     }
 }
 

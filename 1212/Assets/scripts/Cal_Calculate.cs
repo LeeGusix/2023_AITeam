@@ -11,10 +11,10 @@ public class Cal_Calculate : MonoBehaviour
 
     public void Calc()
     {
-        int height = int.Parse(user_height.text); 
-        int weight = int.Parse(user_weight.text);
-        int Standard_Weight = 0;
-        int Calories_Needed = 0;
+        double height = double.Parse(user_height.text);
+        double weight = double.Parse(user_weight.text);
+        double Standard_Weight = 0;
+        double Calories_Needed = 0;
         string User_staus;
 
         //표준 체중 계산
@@ -28,7 +28,7 @@ public class Cal_Calculate : MonoBehaviour
         }
         else
         {
-            Standard_Weight = (int)((height - 100) * 0.9);
+            Standard_Weight = (double)((height - 100) * 0.9);
         }
 
         if (Standard_Weight < weight)
