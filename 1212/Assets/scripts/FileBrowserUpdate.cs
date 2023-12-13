@@ -41,6 +41,7 @@ public class FileBrowserUpdate : MonoBehaviour
                 //rawImage1.texture = uwrTexture;
 
                 FindAnyObjectByType<Photo>().SelectImage(uwrTexture);
+                
             }
         }
     }
