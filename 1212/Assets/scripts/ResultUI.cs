@@ -14,8 +14,10 @@ public class ResultUI : MonoBehaviour
     public TMP_Text txt_Cal;
     [Header("하루 섭취 칼로리")]
     public TMP_Text txt_DailyCal;
+    public TMP_Text txt_DailyCal1;
     [Header("현재 섭취한 칼로리")]
     public TMP_Text txt_DailySumCal;
+    public TMP_Text txt_DailySumCal1;
 
     [Header("단백질")]
     public TMP_Text txt_Protein;
@@ -33,7 +35,7 @@ public class ResultUI : MonoBehaviour
 
     void Start()
     {
-        if ((txt_FoodName || txt_Cal || txt_DailyCal || txt_DailySumCal 
+        if ((txt_FoodName || txt_Cal || txt_DailyCal || txt_DailySumCal
             || txt_Protein || txt_Carbohydrate || txt_Fat || txt_Sugar))
         {
             Debug.LogWarning($"{name} :: 필수 UI 요소가 존재하지 않습니다.");
@@ -49,17 +51,19 @@ public class ResultUI : MonoBehaviour
 
     //결과를 보여줌
     public void Show(string Fname, string Fcal, string Dcal, string DScal,
-                        string Protein, string Carbohydrate, string Fat, string Sugar , Texture2D img)
+                        string Protein, string Carbohydrate, string Fat, string Sugar, Texture2D img)
     {
         CanvasManager.Instance.Active(UIState.Result);
 
         Debug.Log($"{name} :: 결과값이 표시됩니다.");
-        gameObject.SetActive (true);
+        gameObject.SetActive(true);
 
         txt_FoodName.text = $"{Fname}";
         txt_Cal.text = $"{Fcal}";
         txt_DailyCal.text = $"{Dcal}";
+        txt_DailyCal1.text = $"{Dcal}";
         txt_DailySumCal.text = $"{DScal}";
+        txt_DailySumCal1.text = $"{DScal}";
 
         txt_Protein.text = $"{Protein}";
         txt_Carbohydrate.text = $"{Carbohydrate}";

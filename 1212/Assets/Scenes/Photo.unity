@@ -573,7 +573,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'nnnn '
+  m_text: dddd
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bc3bd4442271245f6872a1920280f44b, type: 2}
   m_sharedMaterial: {fileID: 1280558834947753319, guid: bc3bd4442271245f6872a1920280f44b, type: 2}
@@ -1460,7 +1460,7 @@ PrefabInstance:
     - target: {fileID: 6034798313273858557, guid: 28b6e6da7426039458a2e746247a9679, type: 3}
       propertyPath: Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: 59aae5b39dd17c44cb0ff052deb6b416, type: 3}
+      objectReference: {fileID: 5022602860645237092, guid: 1cedc1a880fbb3948af59f1695f5e703, type: 3}
     - target: {fileID: 6034798313273858557, guid: 28b6e6da7426039458a2e746247a9679, type: 3}
       propertyPath: image
       value: 
@@ -4935,7 +4935,9 @@ MonoBehaviour:
   txt_FoodName: {fileID: 5473557460153654864}
   txt_Cal: {fileID: 3500257772204140872}
   txt_DailyCal: {fileID: 7362806757128290629}
+  txt_DailyCal1: {fileID: 569138676}
   txt_DailySumCal: {fileID: 55944458901929664}
+  txt_DailySumCal1: {fileID: 2006215764}
   txt_Protein: {fileID: 4259408184227612769}
   txt_Carbohydrate: {fileID: 5200841005028204636}
   txt_Fat: {fileID: 3670771945947519554}
